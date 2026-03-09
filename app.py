@@ -1,7 +1,8 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-import plotly.express as px
+import matplotlib.pyplot as plt
+import seaborn as sns
 from sklearn.preprocessing import StandardScaler
 from sklearn.cluster import KMeans
 from sklearn.ensemble import IsolationForest
@@ -44,7 +45,6 @@ def load_data():
 df = load_data()
 
 # --- SIDEBAR & INTERACTIVITY ---
-st.sidebar.image("https://cdn-icons-png.flaticon.com/512/2830/2830284.png", width=80)
 st.sidebar.title("Navigation & Filters")
 
 # Module Selection
@@ -79,35 +79,39 @@ st.markdown("---")
 # --- MODULE 1: EDA ---
 if menu == "📊 1. Exploratory Data Analysis":
     st.header("Exploratory Data Analysis (EDA)")
+    sns.set_theme(style="whitegrid")
     
     # Row 1 of charts
     c1, c2 = st.columns(2)
     with c1:
         st.subheader("Distribution of Withdrawals")
-        fig1 = px.histogram(filtered_df, x='Total_Withdrawals', nbins=30, color_discrete_sequence=['#3498db'])
-        st.plotly_chart(fig1, use_container_width=True)
-        st.info("Insight: Most withdrawals hover around the $50k baseline, but notice the long tail of high-demand days.")
+        fig1, ax1 = plt.subplots(figsize=(6, 4))
+        sns.histplot(filtered_df['Total_Withdrawals'], kde=True, ax=ax1, color='#3498db')
+        st.pyplot(fig1)
+        st.info("Insight: Most withdrawals hover around the baseline, with a tail of high-demand days.")
 
     with c2:
         st.subheader("Withdrawals by Day of Week")
-        fig2 = px.box(filtered_df, x='Day_of_Week', y='Total_Withdrawals', color='Day_of_Week')
-        st.plotly_chart(fig2, use_container_width=True)
-        st.info("Insight: Weekends generally display higher volatility compared to mid-week days.")
+        fig2, ax2 = plt.subplots(figsize=(6, 4))
+        sns.boxplot(x='Day_of_Week', y='Total_Withdrawals', data=filtered_df, ax=ax2, palette='Set2')
+        st.pyplot(fig2)
+        st.info("Insight: Notice the volatility and spread changes depending on the day of the week.")
 
     # Row 2 of charts
     c3, c4 = st.columns(2)
     with c3:
         st.subheader("Impact of Holidays")
-        holiday_df = filtered_df.groupby('Holiday_Flag')['Total_Withdrawals'].mean().reset_index()
-        holiday_df['Holiday_Flag'] = holiday_df['Holiday_Flag'].map({0: 'Normal Day', 1: 'Holiday'})
-        fig3 = px.bar(holiday_df, x='Holiday_Flag', y='Total_Withdrawals', color='Holiday_Flag', color_discrete_sequence=['#2ecc71', '#e74c3c'])
-        st.plotly_chart(fig3, use_container_width=True)
+        fig3, ax3 = plt.subplots(figsize=(6, 4))
+        sns.barplot(x='Holiday_Flag', y='Total_Withdrawals', data=filtered_df, ax=ax3, palette='pastel')
+        ax3.set_xticklabels(['Normal Day', 'Holiday'])
+        st.pyplot(fig3)
 
     with c4:
         st.subheader("Correlation Heatmap")
+        fig4, ax4 = plt.subplots(figsize=(6, 4))
         numeric_cols = filtered_df[['Total_Withdrawals', 'Total_Deposits', 'Previous_Day_Cash_Level']]
-        fig4 = px.imshow(numeric_cols.corr(), text_auto=".2f", aspect="auto", color_continuous_scale="Blues")
-        st.plotly_chart(fig4, use_container_width=True)
+        sns.heatmap(numeric_cols.corr(), annot=True, cmap='coolwarm', fmt=".2f", ax=ax4)
+        st.pyplot(fig4)
 
 # --- MODULE 2: CLUSTERING ---
 elif menu == "🎯 2. ATM Clustering":
@@ -126,11 +130,11 @@ elif menu == "🎯 2. ATM Clustering":
     cluster_mapping = {0: 'Steady-Demand', 1: 'High-Demand', 2: 'Low-Demand'}
     filtered_df['Cluster_Label'] = filtered_df['Cluster'].map(cluster_mapping)
 
-    # Plotly Scatter
-    fig = px.scatter(filtered_df, x='Total_Withdrawals', y='Total_Deposits', color='Cluster_Label',
-                     hover_data=['ATM_ID', 'Location_Type'],
-                     color_discrete_map={'Steady-Demand': '#3498db', 'High-Demand': '#e74c3c', 'Low-Demand': '#2ecc71'})
-    st.plotly_chart(fig, use_container_width=True)
+    fig, ax = plt.subplots(figsize=(10, 6))
+    sns.scatterplot(x='Total_Withdrawals', y='Total_Deposits', hue='Cluster_Label', 
+                    data=filtered_df, palette=['#3498db', '#e74c3c', '#2ecc71'], alpha=0.7, ax=ax)
+    plt.title('ATM Clustering: Grouping by Withdrawal & Deposit Behavior', fontweight='bold')
+    st.pyplot(fig)
     
     st.success("Insight: High-Demand ATMs (Red) require more frequent cash replenishment, whereas Low-Demand ATMs (Green) risk holding idle cash.")
 
@@ -146,11 +150,14 @@ elif menu == "🚨 3. Anomaly Detection":
     filtered_df['Anomaly_Score'] = iso_forest.fit_predict(X)
     filtered_df['Behavior'] = filtered_df['Anomaly_Score'].map({1: 'Normal', -1: 'Anomaly'})
 
-    # Plotly Scatter
-    fig = px.scatter(filtered_df, x=filtered_df.index, y='Total_Withdrawals', color='Behavior',
-                     hover_data=['ATM_ID', 'Holiday_Flag'],
-                     color_discrete_map={'Normal': '#95a5a6', 'Anomaly': '#c0392b'})
-    st.plotly_chart(fig, use_container_width=True)
+    fig, ax = plt.subplots(figsize=(12, 6))
+    sns.scatterplot(x=filtered_df.index, y='Total_Withdrawals', hue='Behavior', 
+                    palette={'Normal': '#95a5a6', 'Anomaly': '#c0392b'}, 
+                    data=filtered_df, alpha=0.8, ax=ax)
+    
+    plt.title('Anomaly Detection: Flagging Unusual Withdrawal Spikes', fontweight='bold')
+    plt.xlabel('Transaction Index (Time)')
+    st.pyplot(fig)
     
     anomaly_count = filtered_df[filtered_df['Behavior'] == 'Anomaly'].shape[0]
-    st.warning(f"**Insight:** Detected {anomaly_count} unusual transaction spikes. Hover over the red dots to see that many align with holidays or extreme weather events.")
+    st.warning(f"**Insight:** Detected **{anomaly_count}** unusual transaction spikes. Notice how the red anomalies sit distinctly above the standard transaction baseline.")
