@@ -25,7 +25,7 @@ st.markdown("""
 
 # --- BULLETPROOF DATA LOADING ---
 @st.cache_data
-def load_atm_data():
+def load_atm_data_with_weather():
     np.random.seed(42)
     data_size = 1000
     df = pd.DataFrame({
@@ -38,14 +38,16 @@ def load_atm_data():
         'Previous_Day_Cash_Level': np.abs(np.random.normal(100000, 20000, data_size)),
         'Location_Type': np.random.choice(['Urban', 'Semi-Urban', 'Rural'], size=data_size), 
         'Holiday_Flag': np.random.choice(['Normal Day', 'Holiday'], p=[0.9, 0.1], size=data_size),
+        'Weather_Condition': np.random.choice(['Clear', 'Rain', 'Extreme'], p=[0.7, 0.2, 0.1], size=data_size)
     })
-    # Add artificial anomalies for holidays
+    # Add artificial anomalies for holidays and extreme weather
     df.loc[df['Holiday_Flag'] == 'Holiday', 'Total_Withdrawals'] += np.random.normal(40000, 10000, sum(df['Holiday_Flag'] == 'Holiday'))
+    df.loc[df['Weather_Condition'] == 'Extreme', 'Total_Withdrawals'] += np.random.normal(20000, 5000, sum(df['Weather_Condition'] == 'Extreme'))
     return df
 
-df = load_atm_data()
+df = load_atm_data_with_weather()
 
-# --- SIDEBAR NAVIGATION ---
+# --- SIDEBAR NAVIGATION & FILTERS ---
 with st.sidebar:
     st.image("https://cdn-icons-png.flaticon.com/512/2830/2830284.png", width=80)
     st.title("Admin Console")
@@ -59,8 +61,13 @@ with st.sidebar:
     # Interactive Filters
     st.subheader("Global Filters")
     location_filter = st.selectbox("Location Type:", ["All", "Urban", "Semi-Urban", "Rural"])
+    weather_filter = st.selectbox("Weather Condition:", ["All", "Clear", "Rain", "Extreme"])
+    
+    # Apply Filters
     if location_filter != "All":
         df = df[df['Location_Type'] == location_filter]
+    if weather_filter != "All":
+        df = df[df['Weather_Condition'] == weather_filter]
         
     st.write(f"**Records Loaded:** {len(df):,}")
 
@@ -72,7 +79,7 @@ kpi1, kpi2, kpi3, kpi4 = st.columns(4)
 kpi1.metric("Active ATMs", df['ATM_ID'].nunique())
 kpi2.metric("Avg Daily Withdrawals", f"${df['Total_Withdrawals'].mean():,.0f}")
 kpi3.metric("Avg Daily Deposits", f"${df['Total_Deposits'].mean():,.0f}")
-kpi4.metric("Holiday Events Tracked", len(df[df['Holiday_Flag'] == 'Holiday']))
+kpi4.metric("Extreme Weather Days", len(df[df['Weather_Condition'] == 'Extreme']))
 st.divider()
 
 # --- MODULE 1: EDA ---
@@ -93,8 +100,9 @@ if menu == "📊 1. Overview & EDA":
         st.plotly_chart(fig3, use_container_width=True)
 
     with col2:
-        fig2 = px.box(df, x='Day_of_Week', y='Total_Withdrawals', color='Day_of_Week',
-                      title="Withdrawal Patterns by Day of Week",
+        fig2 = px.box(df, x='Weather_Condition', y='Total_Withdrawals', color='Weather_Condition',
+                      title="Withdrawal Patterns by Weather",
+                      color_discrete_map={'Clear': '#10B981', 'Rain': '#3B82F6', 'Extreme': '#EF4444'},
                       template="plotly_dark")
         st.plotly_chart(fig2, use_container_width=True)
         
@@ -118,7 +126,7 @@ elif menu == "🎯 2. ATM Clustering":
     df['Segment'] = df['Cluster'].map({0: 'Steady-Demand', 1: 'High-Demand', 2: 'Low-Demand'})
 
     fig5 = px.scatter(df, x='Total_Withdrawals', y='Total_Deposits', color='Segment', 
-                      hover_data=['ATM_ID', 'Location_Type'],
+                      hover_data=['ATM_ID', 'Location_Type', 'Weather_Condition'],
                       title="ATM Segments: High vs Low Demand",
                       color_discrete_map={'Steady-Demand': '#3B82F6', 'High-Demand': '#EF4444', 'Low-Demand': '#10B981'},
                       template="plotly_dark", opacity=0.8)
@@ -138,11 +146,11 @@ elif menu == "🚨 3. Anomaly Detection":
     df['Behavior'] = df['Anomaly_Score'].map({1: 'Normal', -1: 'Anomaly'})
 
     fig6 = px.scatter(df, x=df.index, y='Total_Withdrawals', color='Behavior',
-                      hover_data=['ATM_ID', 'Holiday_Flag', 'Location_Type'],
+                      hover_data=['ATM_ID', 'Holiday_Flag', 'Location_Type', 'Weather_Condition'],
                       title="Flagging Unusual Withdrawal Spikes",
                       color_discrete_map={'Normal': '#334155', 'Anomaly': '#EF4444'},
                       template="plotly_dark")
     st.plotly_chart(fig6, use_container_width=True)
     
     anomaly_count = df[df['Behavior'] == 'Anomaly'].shape[0]
-    st.error(f"⚠️ **Alert:** Detected **{anomaly_count}** unusual transaction spikes. Hover over the red dots to see that many align with holidays!")
+    st.error(f"⚠️ **Alert:** Detected **{anomaly_count}** unusual transaction spikes. Hover over the red dots to see how they align with holidays or extreme weather!")
