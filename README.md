@@ -107,6 +107,6 @@ streamlit run app.py
 
 | Name | WACP NO |
 |------|---------|
-| Aditya Jitendra Kumar Sahani | 1000414 |
-| Zene Sophie Anand | 1000442 |
-| Naman Om shreshta | 1000432 |
+| ZENE SOPHIE ANAND | 1000442 |
+| NAMAN OM SHRESHTA | 1000432 |
+| NISHTHA PRIYESH SHAH  | 1000436 |
