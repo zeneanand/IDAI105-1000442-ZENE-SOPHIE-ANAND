@@ -100,3 +100,13 @@ pip install -r requirements.txt
 3. Run the Streamlit server:
 ```bash
 streamlit run app.py
+
+```
+
+### 👥 Collaborators
+
+| Name | WACP NO |
+|------|---------|
+| Aditya Jitendra Kumar Sahani | 1000414 |
+| Zene Sophie Anand | 1000442 |
+| Naman Om shreshta | 1000432 |
