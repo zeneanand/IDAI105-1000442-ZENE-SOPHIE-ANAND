@@ -38,7 +38,8 @@ The primary goal of this project is to optimize cash replenishment strategies fo
 ### 🎯 **2. ATM Clustering (K-Means)**
 * **Algorithm:** K-Means Clustering (`scikit-learn`).
 * **Process:** Standardized the `Total_Withdrawals` and `Total_Deposits` features and grouped the ATMs into **3 distinct clusters**.
-* **Business Labels Applied:** * 🔴 *High-Demand:* Requires multi-day or frequent cash stocking.
+* **Business Labels Applied:** 
+  * 🔴 *High-Demand:* Requires multi-day or frequent cash stocking.
   * 🔵 *Steady-Demand:* Predictable, baseline cash requirements.
   * 🟢 *Low-Demand:* Holds idle cash that can be optimized or rerouted.
 
