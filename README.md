@@ -53,9 +53,9 @@ The primary goal of this project is to optimize cash replenishment strategies fo
 
 | Part 1 | Part 2 | Part 3 |
 | :---: | :---: | :---: |
-| <img src="SCREEN SHOT/1.png" width="250"/><br>**1. Main Dshboard** | <img src="SCREEN SHOT/#2.png" width="250"/><br>**2. Global Filter Location Type** | <img src="SCREEN SHOT/#3.png" width="250"/><br>**3. Global Weather Conditions** |
-| <img src="SCREEN SHOT/#4.png" width="250"/><br>**4. Exploring Data Analytics** | <img src="SCREEN SHOT/#5.png" width="250"/><br>**5. Impact Of Holidays On Average Withdrawal** | <img src="SCREEN SHOT/#6.png" width="250"/><br>**6. AI Powered ATM Clustering** |
-| <img src="SCREEN SHOT/#7.png" width="250"/><br>**7. Anomaly And Spike Detection** | | |
+| <img src="SCREEN%20SHOT/1.png" width="250"/><br>**1. Main Dshboard** | <img src="SCREEN%20SHOT/#2.png" width="250"/><br>**2. Global Filter Location Type** | <img src="SCREEN%20SHOT/#3.png" width="250"/><br>**3. Global Weather Conditions** |
+| <img src="SCREEN%20SHOT/#4.png" width="250"/><br>**4. Exploring Data Analytics** | <img src="SCREEN%20SHOT/#5.png" width="250"/><br>**5. Impact Of Holidays On Average Withdrawal** | <img src="SCREEN%20SHOT/#6.png" width="250"/><br>**6. AI Powered ATM Clustering** |
+| <img src="SCREEN%20SHOT/#7.png" width="250"/><br>**7. Anomaly And Spike Detection** | | |
 
 ---
 ## 💡 **Key Business Insights Generated**
