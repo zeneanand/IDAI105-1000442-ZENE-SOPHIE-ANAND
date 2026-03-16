@@ -50,6 +50,48 @@ The primary goal of this project is to optimize cash replenishment strategies fo
 
 ---
 
+## 📸 UI Screenshots & Dashboard Views
+
+<table>
+  <tr>
+    <td align="center">
+      <img src="docs/screenshot1.png" width="250"/><br>
+      <b>1. Main Dashboard </b>
+    </td>
+    <td align="center">
+      <img src="docs/screenshot2.png" width="250"/><br>
+      <b>2. Global Filter Location Type (EDA)</b>
+    </td>
+    <td align="center">
+      <img src="docs/screenshot3.png" width="250"/><br>
+      <b>3. Global Filter Weather Condition </b>
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="docs/screenshot4.png" width="250"/><br>
+      <b>4. Exploring Data Analytics</b>
+    </td>
+    <td align="center">
+      <img src="docs/screenshot5.png" width="250"/><br>
+      <b>5. Impact Of Holidays On Average Withdrawals</b>
+    </td>
+    <td align="center">
+      <img src="docs/screenshot6.png" width="250"/><br>
+      <b>6. AI Powered ATM Clustering</b>
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="docs/screenshot7.png" width="250"/><br>
+      <b>7. Anomaly & Spike Detection</b>
+    </td>
+    <td></td>
+    <td></td>
+  </tr>
+</table>
+
+---
 ## 💡 **Key Business Insights Generated**
 1. **Holiday Volatility:** Withdrawals show massive demand spikes on and immediately preceding recorded holidays.
 2. **Location-Based Strategy:** Urban and heavy commercial zones correlate strongly with the 'High-Demand' K-Means cluster.
