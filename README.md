@@ -49,13 +49,13 @@ The primary goal of this project is to optimize cash replenishment strategies fo
 * **Business Value:** Automatically flags highly unusual withdrawal events (often correlating with holidays or local events) that deviate from the standard baseline, allowing the bank to proactively prevent cash shortages.
 
 ---
-## 📸 UI Screenshits
+## 📸 UI Screenshots
 
 | Part 1 | Part 2 | Part 3 |
 | :---: | :---: | :---: |
-| <img src="SCREEN%20SHOT/1.png" width="250"/><br>**1. Main Dshboard** | <img src="SCREEN%20SHOT/#2.png" width="250"/><br>**2. Global Filter Location Type** | <img src="SCREEN%20SHOT/#3.png" width="250"/><br>**3. Global Weather Conditions** |
-| <img src="SCREEN%20SHOT/#4.png" width="250"/><br>**4. Exploring Data Analytics** | <img src="SCREEN%20SHOT/#5.png" width="250"/><br>**5. Impact Of Holidays On Average Withdrawal** | <img src="SCREEN%20SHOT/#6.png" width="250"/><br>**6. AI Powered ATM Clustering** |
-| <img src="SCREEN%20SHOT/#7.png" width="250"/><br>**7. Anomaly And Spike Detection** | | |
+| <img src="SCREEN%20SHOT/%231.png" width="250"/><br>**1. Project Scope & Overview** | <img src="SCREEN%20SHOT/%232.png" width="250"/><br>**2. Exploratory Data Analysis** | <img src="SCREEN%20SHOT/%233.png" width="250"/><br>**3. Clustering / Segmentation** |
+| <img src="SCREEN%20SHOT/%234.png" width="250"/><br>**4. Association Rules** | <img src="SCREEN%20SHOT/%235.png" width="250"/><br>**5. Anomaly Detection** | <img src="SCREEN%20SHOT/%236.png" width="250"/><br>**6. Data Visualizations** |
+| <img src="SCREEN%20SHOT/%237.png" width="250"/><br>**7. Interactive Dashboard** | | |
 
 ---
 ## 💡 **Key Business Insights Generated**
